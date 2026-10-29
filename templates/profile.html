@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">МОЙ TECHSTORE</span>
+      <h1>Личный кабинет</h1>
+    </div>
+  </div>
+  <div class="profile-layout">
+    <aside class="panel">
+      <div class="avatar">{{ user.full_name[0] }}</div>
+      <h3>{{ user.full_name }}</h3>
+      <p>{{ user.email }}</p>
+      <span class="badge text-bg-light">{{ 'Администратор' if user.is_admin else 'Покупатель' }} · ID {{ user.id }}</span>
+      <a href="/orders" class="btn btn-primary w-100 mt-4">Мои заказы</a>
+      {% if user.is_admin %}
+        <a href="/admin" class="btn btn-outline-dark w-100 mt-3">Административная панель</a>
+      {% endif %}
+    </aside>
+    <form method="post" class="panel">
+      <h2>Личные данные</h2>
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      {% include "profile_fields.html" %}
+      <h3 class="mt-4">Смена пароля</h3>
+      <p class="muted">Оставьте пустым, если менять пароль не нужно.</p>
+      <div class="field">
+        <label for="current_password">Текущий пароль</label>
+        <input class="form-control"
+               type="password"
+               name="current_password"
+               id="current_password"
+               autocomplete="current-password">
+      </div>
+      <div class="field">
+        <label for="password">Новый пароль</label>
+        <input class="form-control"
+               type="password"
+               name="password"
+               id="password"
+               maxlength="128"
+               autocomplete="new-password">
+        <small>{{ password_help }}</small>
+      </div>
+      <button class="btn btn-primary">Сохранить изменения</button>
+    </form>
+  </div>
+{% endblock %}

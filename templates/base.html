@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}TechStore — техника ближе к вам{% endblock %}</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/static/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="topline">
+      <div class="container-xl">
+        Москва <span>Учебный магазин компьютерной техники</span>
+        <span>Ежедневно с 10:00 до 21:00</span>
+      </div>
+    </div>
+    <header>
+      <div class="container-xl header-row">
+        <a class="logo" href="/">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <rect x="3" y="5" width="34" height="24" rx="3" />
+            <path d="M20 29v7M12 36h16" />
+          </svg>
+          <span>Tech<b>Store</b>
+            <small>Техника ближе к вам</small>
+          </span>
+        </a>
+        <a class="btn btn-primary catalog-button" href="/products">☰ Каталог</a>
+        <form action="/products" class="search" role="search">
+          <input name="q"
+                 value="{{ q|default('') }}"
+                 placeholder="Найти ноутбук, монитор, смартфон…"
+                 aria-label="Поиск товаров">
+          <button aria-label="Найти">⌕</button>
+        </form>
+        <a class="header-link" href="/cart">Корзина <b class="cart-counter">{{ cart_count }}</b>
+        </a>
+        <a class="header-link" href="{{ '/profile' if user else '/login' }}">{{ 'Кабинет' if user else 'Войти' }}</a>
+      </div>
+      <nav class="container-xl main-nav" aria-label="Основная навигация">
+        <a href="/" class="{{ 'active' if request.url.path=='/' else '' }}">Главная</a>
+        <a href="/products">Все товары</a>
+        <a class="red" href="/promotions">Акции и скидки</a>
+        <a href="/orders">Мои заказы</a>
+        {% if user and user.is_admin %}
+          <a href="/admin">Администрирование</a>
+        {% endif %}
+        <span class="nav-note">Доставка и самовывоз</span>
+        {% if user %}
+          <form action="/logout" method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <button class="link-button">Выйти</button>
+          </form>
+        {% else %}
+          <a href="/register">Регистрация</a>
+        {% endif %}
+      </nav>
+    </header>
+    <main class="container-xl main-content">
+      {% if request.query_params.get("message") %}
+        <div class="alert alert-info" role="status">{{ request.query_params.get("message") }}</div>
+      {% endif %}
+      {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <div class="container-xl footer-inner">
+        <div>
+          <a class="logo" href="/">Tech<b>Store</b>
+          </a>
+          <p>Техника для работы, учёбы и вдохновения.</p>
+        </div>
+        <div>
+          <strong>Покупателям</strong>
+          <a href="/products">Каталог техники</a>
+          <a href="/promotions">Акции</a>
+          <a href="/orders">Заказы и доставка</a>
+        </div>
+        <div>
+          <strong>TechStore · Учебный проект</strong>
+          <p>ОСПО · Лабораторные работы №3–6 · Вариант 34</p>
+          <small>Демонстрационные цены. Заказы и платежи учебные.
+            <br>
+          Магазин не связан с «М.Видео» и производителями.</small>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

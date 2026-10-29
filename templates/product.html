@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — TechStore{% endblock %}
+{% block content %}
+  <div class="breadcrumbs">
+    <a href="/products">Каталог</a> / <a href="/products?category={{ product.category_id }}">{{ product.category.name }}</a> / {{ product.brand }}
+  </div>
+  <section class="product-detail panel">
+    <div class="detail-image">
+      <img src="{{ product.image }}" alt="{{ product.name }}">
+    </div>
+    <div>
+      <span class="eyebrow">{{ product.brand }} · АРТИКУЛ {{ product.id }}</span>
+      <h1>{{ product.name }}</h1>
+      <p class="stock">{{ 'В наличии: '+product.stock|string+' шт.' if product.stock else 'Нет в наличии' }}</p>
+      <p class="description">{{ product.description }}</p>
+      {% if product.promotion %}
+        <p class="promo-note">Акция №{{ product.promotion_id }}: {{ product.promotion.name }} · {{ '−'+product.promotion.discount_percent|string+'%' if product.promotion.active else 'сейчас не действует' }}</p>
+      {% endif %}
+      <div class="detail-price">{{ product.sale_price|rub }} {% if product.sale_price!=product.price %}
+        <del>{{ product.price|rub }}</del>
+{% endif %}
+</div>
+<form action="/cart/{{ product.id }}" method="post" class="inline-form">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input type="hidden" name="action" value="add">
+  <input class="form-control quantity"
+         type="number"
+         name="quantity"
+         min="1"
+         max="{{ [product.stock,99]|min }}"
+         value="1"
+         aria-label="Количество"
+         required>
+  <button class="btn btn-primary" {% if not product.stock %}disabled{% endif %}>Добавить в корзину</button>
+</form>
+<p class="muted mt-3">Доставка курьером или самовывоз. Учебный магазин.</p>
+</div>
+</section>
+{% endblock %}

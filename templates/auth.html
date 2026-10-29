@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="auth-layout">
+    <div class="auth-intro">
+      <span class="eyebrow">ДОБРО ПОЖАЛОВАТЬ В TECHSTORE</span>
+      <h1>
+        {{ 'Техника ближе.' if register else 'Рады видеть вас снова.' }}
+        <br>
+        <em>{{ 'Покупки проще.' if register else 'Всё готово к покупкам.' }}</em>
+      </h1>
+      <p>
+        Ваши заказы, личные данные
+        <br>
+        и любимая техника — в одном месте.
+      </p>
+      <a href="/products">Посмотреть каталог →</a>
+    </div>
+    <section class="panel auth-panel">
+      <h2>{{ 'Регистрация' if register else 'Вход в аккаунт' }}</h2>
+      <form method="post" action="{{ '/register' if register else '/login' }}">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        {% if register %}
+          {% include "profile_fields.html" %}
+        {% else %}
+          <div class="field">
+            <label for="email">Email</label>
+            <input class="form-control"
+                   id="email"
+                   name="email"
+                   type="email"
+                   autocomplete="username"
+                   value="{{ form.email|default('') }}"
+                   required>
+          </div>
+        {% endif %}
+        <div class="field">
+          <label for="password">Пароль</label>
+          <div class="password-wrap">
+            <input class="form-control"
+                   type="password"
+                   name="password"
+                   id="password"
+                   autocomplete="{{ 'new-password' if register else 'current-password' }}"
+                   maxlength="128"
+                   required>
+            <button type="button" class="show-password" aria-label="Показать пароль">◉</button>
+          </div>
+          {% if register %}
+            <small>{{ password_help }}</small>
+          {% endif %}
+        </div>
+        {% if register %}
+          <div class="field">
+            <label for="password_confirm">Повторите пароль</label>
+            <input class="form-control"
+                   name="password_confirm"
+                   id="password_confirm"
+                   type="password"
+                   autocomplete="new-password"
+                   required
+                   maxlength="128">
+          </div>
+        {% endif %}
+        <button class="btn btn-primary w-100">{{ 'Зарегистрироваться' if register else 'Войти' }}</button>
+      </form>
+      <p class="mt-3">
+        {{ 'Уже есть аккаунт?' if register else 'Нет аккаунта?' }} <a href="{{ '/login' if register else '/register' }}">{{ 'Войти' if register else 'Зарегистрироваться' }}</a>
+      </p>
+    </section>
+  </div>
+{% endblock %}

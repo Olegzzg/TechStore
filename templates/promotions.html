@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <span class="eyebrow">ПРИЯТНО ПОКУПАТЬ ВЫГОДНО</span>
+  <h1>Акции TechStore</h1>
+  <div class="promotions-grid">
+    {% for p in promotions %}
+      <article class="panel promotion-card">
+        <span class="promotion-percent">−{{ p.discount_percent }}%</span>
+        <h2>{{ p.name }}</h2>
+        <p>{{ p.description }}</p>
+        <small>{{ p.starts_on.strftime("%d.%m.%Y") }} — {{ p.ends_on.strftime("%d.%m.%Y") }} · {{ 'Действует' if p.active else 'Не действует' }}</small>
+        <p class="muted">ID акции: {{ p.id }}</p>
+        <a href="/products?promo=true" class="btn btn-primary">Товары со скидкой →</a>
+      </article>
+    {% else %}
+      <p>Скоро здесь появятся новые предложения.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

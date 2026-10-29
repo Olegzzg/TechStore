@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% from 'components.html' import card %}
+{% block content %}
+  {% if home %}
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">БОЛЬШЕ ВОЗМОЖНОСТЕЙ КАЖДЫЙ ДЕНЬ</span>
+        <h1>
+          Современная техника
+          <br>
+          <em>для больших идей</em>
+        </h1>
+        <p>
+          Работайте, учитесь, играйте.
+          <br>
+          Всё, что нужно — в TechStore.
+        </p>
+        <a href="/products?promo=true" class="btn btn-primary">Выбрать со скидкой →</a>
+        <small>Любимые бренды. Выгодные предложения.</small>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-ring"></div>
+        <img src="/static/images/hero.webp"
+             alt="Ноутбук Apple MacBook Pro"
+             width="540"
+             height="360">
+        <span class="hero-sticker">Техника мечты
+          <br>
+          <b>ближе, чем кажется</b>
+        </span>
+      </div>
+    </section>
+    <section class="benefits">
+      <div>
+        <b>✓</b>
+        <span>Проверенные бренды<small>Apple, Samsung, ASUS и другие</small>
+        </span>
+      </div>
+      <div>
+        <b>↗</b>
+        <span>Удобная доставка<small>Курьером или самовывоз</small>
+        </span>
+      </div>
+      <div>
+        <b>%</b>
+        <span>Больше выгоды<small>Акции на любимую технику</small>
+        </span>
+      </div>
+    </section>
+  {% endif %}
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">{{ 'ВЫБИРАЙТЕ ЛУЧШЕЕ' if home else 'ТЕХНИКА ДЛЯ ВАШИХ ЗАДАЧ' }}</span>
+      <h2>{{ 'Популярная техника' if home else 'Каталог товаров' }}</h2>
+    </div>
+    <span class="muted">Найдено товаров: {{ count }}</span>
+  </div>
+  <div class="category-chips">
+    <a class="{{ 'selected' if not category and not promo else '' }}"
+       href="/products">Вся техника</a>
+    {% for c in categories %}
+      <a class="{{ 'selected' if category==c.id else '' }}"
+         href="/products?category={{ c.id }}">{{ c.name }}</a>
+    {% endfor %}
+    <a class="{{ 'selected' if promo else '' }}" href="/products?promo=true">% Со скидкой</a>
+  </div>
+  <form action="/products" class="filterbar">
+    <input type="hidden" name="category" value="{{ category }}">
+    <input type="hidden" name="promo" value="{{ 'true' if promo else 'false' }}">
+    <input class="form-control"
+           name="q"
+           value="{{ q }}"
+           placeholder="Название, бренд или описание"
+           aria-label="Поиск в каталоге">
+    <select class="form-select" name="sort" aria-label="Сортировка">
+      {% for key,label in [('popular','По популярности'),('price','Сначала дешевле'),('price_desc','Сначала дороже'),('name','По названию')] %}
+        <option value="{{ key }}" {% if sort==key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-dark">Применить</button>
+  </form>
+  {% if products %}
+    <div class="product-grid">{% for p in products %}{{ card(p, csrf) }}{% endfor %}</div>
+  {% else %}
+    <div class="empty-state">
+      <h3>Пока ничего не найдено</h3>
+      <p>Измените запрос или выберите другую категорию.</p>
+      <a href="/products" class="btn btn-primary">Все товары</a>
+    </div>
+  {% endif %}
+  {% if pages>1 %}
+    <nav class="pagination-row" aria-label="Страницы каталога">
+      {% for n,url in links.items() %}
+        <a href="{{ url }}" class="{{ 'selected' if n==page else '' }}">{{ n }}</a>
+      {% endfor %}
+    </nav>
+  {% endif %}
+  {% if not user and home %}
+    <section class="join-panel">
+      <div>
+        <span class="eyebrow">ВАШ ЛИЧНЫЙ TECHSTORE</span>
+        <h2>Все покупки под рукой</h2>
+        <p>
+          Зарегистрируйтесь, чтобы оформлять заказы,
+          <br>
+          следить за доставкой и управлять профилем.
+        </p>
+      </div>
+      <a href="/register" class="btn btn-primary">Создать аккаунт →</a>
+    </section>
+  {% endif %}
+{% endblock %}

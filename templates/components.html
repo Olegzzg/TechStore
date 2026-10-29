@@ -1,0 +1,32 @@
+{% macro card(p, csrf) %}
+  <article class="product-card">
+    <a href="/products/{{ p.id }}" class="product-image">
+      {% if p.promotion and p.promotion.active %}
+        <span class="discount">−{{ p.promotion.discount_percent }}%</span>
+      {% endif %}
+      <img src="{{ p.image }}"
+           alt="{{ p.name }}"
+           loading="lazy"
+           width="260"
+           height="210">
+    </a>
+    <div class="product-body">
+      <span class="product-category">{{ p.category.name }} · {{ p.brand }}</span>
+      <a class="product-name" href="/products/{{ p.id }}">{{ p.name }}</a>
+      <span class="stock {{ 'soldout' if not p.stock else '' }}">{{ 'В наличии · '+p.stock|string+' шт.' if p.stock else 'Нет в наличии' }}</span>
+      <div class="price-row">
+        <strong>{{ p.sale_price|rub }}</strong>
+        {% if p.sale_price != p.price %}
+          <del>{{ p.price|rub }}</del>
+        {% endif %}
+      </div>
+      <form method="post" action="/cart/{{ p.id }}">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="action" value="add">
+        <button class="btn btn-primary w-100" {% if not p.stock %}disabled{% endif %}>В корзину <span>＋</span>
+        </button>
+      </form>
+    </div>
+  </article>
+{% endmacro %}

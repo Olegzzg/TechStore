@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% macro field(key,label,type='text',required=true,maxlength=300) %}
+  <div class="field">
+    <label for="{{ key }}">{{ label }}</label>
+    <input class="form-control"
+           type="{{ type }}"
+           name="{{ key }}"
+           id="{{ key }}"
+           value="{{ '' if type=='password' else form[key]|default('') }}"
+           {% if required %}required{% endif %}
+           maxlength="{{ maxlength }}"
+           {% if type=='number' %}step="{{ '0.01' if key=='price' else '1' }}" min="{{ '0' if key=='stock' else '0.01' if key=='price' else '1' }}"{% endif %}>
+  </div>
+{% endmacro %}
+{% macro select_field(key,label,options) %}
+  <div class="field">
+    <label for="{{ key }}">{{ label }}</label>
+    <select class="form-select" name="{{ key }}" id="{{ key }}" required>
+      {% for option in options %}
+        <option {% if form[key]==option %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endmacro %}
+{% block content %}
+  <div class="breadcrumbs">
+    <a href="/admin">Администрирование</a> / <a href="/admin/{{ section }}">{{ sections[section][0] }}</a>
+  </div>
+  <div class="section-heading">
+    <h1>{{ 'Редактирование №'+record.id|string if record and record.id else 'Новая запись' }}</h1>
+    <a href="/admin/{{ section }}">← Назад</a>
+  </div>
+  <form method="post" class="panel admin-form">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    {% if section=="categories" %}{{ field('name','Название категории',maxlength=100) }}
+    {% elif section=="products" %}{{ field('name','Название товара',maxlength=160) }}{{ field('brand','Бренд',maxlength=80) }}<div class="field">
+      <label for="category_id">Категория</label>
+      <select class="form-select" name="category_id" id="category_id" required>
+        <option value="">Выберите категорию</option>
+        {% for c in categories %}
+          <option value="{{ c.id }}"
+                  {% if form.category_id|string==c.id|string %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+      </div>
+      <div class="field">
+        <label for="promotion_id">Акция (внешний ключ)</label>
+        <select class="form-select" name="promotion_id" id="promotion_id">
+          <option value="">Без акции</option>
+          {% for p in promotions %}
+            <option value="{{ p.id }}"
+                    {% if form.promotion_id|string==p.id|string %}selected{% endif %}>ID {{ p.id }} · {{ p.name }} (−{{ p.discount_percent }}%)</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="description">Описание</label>
+        <textarea class="form-control"
+                  id="description"
+                  name="description"
+                  rows="4"
+                  maxlength="10000"
+                  required>{{ form.description|default('') }}</textarea>
+      </div>
+      {{ field('image','URL картинки или /static/images/имя',maxlength=1000) }}
+      <div class="field-row">{{ field('price', 'Стоимость до скидки, ₽', 'number') }}{{ field('stock', 'Остаток, шт.', 'number') }}</div>
+      <p class="muted">Скидка вычисляется по связанной акции, только если она действует сегодня.</p>
+    {% elif section=="promotions" %}{{ field('name','Название акции',maxlength=100) }}<div class="field">
+      <label for="description">Описание</label>
+      <textarea class="form-control"
+                id="description"
+                name="description"
+                maxlength="3000"
+                required>{{ form.description|default('') }}</textarea>
+      </div>
+      {{ field('discount_percent', 'Скидка от 1 до 90, %', 'number') }}
+      <div class="field-row">{{ field('starts_on', 'Начало акции', 'date') }}{{ field('ends_on', 'Окончание акции', 'date') }}</div>
+      <p class="muted">При удалении акции товары сохраняются, их promotion_id становится NULL.</p>
+    {% elif section=="users" %}
+      {% include "profile_fields.html" %}{{ field('password','Новый пароль (пусто — оставить текущий)' if record else 'Пароль','password',not record,maxlength=128) }}<small>{{ password_help }}</small>
+      <label class="form-check my-4">
+        <input class="form-check-input"
+               type="checkbox"
+               name="is_admin"
+               {% if form.is_admin and form.is_admin!='off' %}checked{% endif %}>
+        <span class="form-check-label">Администратор — доступ ко всем данным и управлению магазином</span>
+      </label>
+    {% elif section=="orders" %}
+      {% if record and record.id %}
+        <p>Покупатель: <b>{{ record.user.full_name }}</b> · {{ record.user.email }}</p>{{ select_field('status','Статус заказа',order_statuses) }}{% else %}
+        <div class="field">
+          <label for="user_id">Покупатель</label>
+          <select class="form-select" name="user_id" id="user_id" required>
+            {% for c in customers %}
+              <option value="{{ c.id }}"
+                      {% if form.user_id|string==c.id|string %}selected{% endif %}>{{ c.full_name }} · {{ c.email }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}{{ field('address', 'Адрес доставки') }}<h3>Позиции заказа</h3>
+        {% if record and record.id %}
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Цена при покупке</th>
+              </tr>
+              {% for item in record.items %}
+                <tr>
+                  <td>{{ item.product.name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.price|rub }}</td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+          <p>
+            <b>Итого: {{ record.total|rub }}</b>
+          </p>
+          {% if record.status in ["Новый","В обработке"] and (not record.payment or record.payment.status=="Ожидает оплаты") %}
+            <h3>Изменить состав</h3>
+            <p class="muted">Укажите новые количества. Остатки и сумма платежа обновятся автоматически. Цена уже добавленных товаров сохраняется.</p>
+            <div class="order-products">
+              {% for p in products %}
+                {% set selected = record.items|selectattr('product_id','equalto',p.id)|list %}
+                {% set current = selected[0].quantity if selected else 0 %}
+                <label>
+                  {{ p.name }}<small>{{ p.sale_price|rub }} · свободно {{ p.stock }} шт.</small>
+                  <input class="form-control quantity"
+                         type="number"
+                         min="0"
+                         max="99"
+                         name="qty_{{ p.id }}"
+                         value="{{ form['qty_'+p.id|string] if form['qty_'+p.id|string] is defined else current }}">
+                </label>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="muted">Состав оплаченного, отправленного или завершённого заказа сохраняется для истории.</p>
+          {% endif %}
+        {% else %}
+          <p class="muted">Укажите количество нужных товаров. Ноль — не включать в заказ. Оплата и доставка создаются автоматически.</p>
+          <div class="order-products">
+            {% for p in products %}
+              <label>
+                {{ p.name }} <small>{{ p.sale_price|rub }} · остаток {{ p.stock }}</small>
+                <input class="form-control quantity"
+                       type="number"
+                       min="0"
+                       max="{{ [p.stock,99]|min }}"
+                       name="qty_{{ p.id }}"
+                       value="{{ form['qty_'+p.id|string]|default(0) }}">
+              </label>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% elif section in ["payments","deliveries"] %}
+        <div class="field">
+          <label for="order_id">Связанный заказ</label>
+          <select class="form-select" name="order_id" id="order_id" required>
+            {% for o in orders %}
+              <option value="{{ o.id }}"
+                      {% if form.order_id|string==o.id|string %}selected{% endif %}>№{{ o.id }} · {{ o.user.full_name }} · {{ o.total|rub }} · {{ o.status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% if section=="payments" %}{{ select_field('method', 'Способ оплаты', ['При получении', 'Учебная карта']) }}{{ select_field('status','Статус оплаты',payment_statuses) }}<p class="muted">Сумма берётся из позиций заказа автоматически. Реальные банковские данные не запрашиваются.</p>
+      {% else %}{{ field('address', 'Адрес доставки') }}{{ select_field('method', 'Способ доставки', ['Курьер', 'Самовывоз']) }}{{ select_field('status','Статус доставки',delivery_statuses) }}{{ field('tracking_number','Трек-номер','text',false,maxlength=100) }}<p class="muted">«В пути» и «Доставлена» обновляют статус заказа. Для отмены доставки отмените сам заказ.</p>
+      {% endif %}
+    {% endif %}
+    <div class="inline-form mt-4">
+      <button class="btn btn-primary">Сохранить</button>
+      <a class="btn btn-outline-dark" href="/admin/{{ section }}">Отмена</a>
+    </div>
+  </form>
+{% endblock %}

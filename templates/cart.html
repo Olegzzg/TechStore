@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">ВАШ ВЫБОР</span>
+      <h1>Корзина</h1>
+    </div>
+    <a href="/products">Продолжить покупки →</a>
+  </div>
+  {% if rows %}
+    <div class="cart-layout">
+      <section class="panel">
+        {% for row in rows %}
+          <article class="cart-item">
+            <img src="{{ row.product.image }}" alt="{{ row.product.name }}">
+            <div>
+              <a href="/products/{{ row.product.id }}">{{ row.product.name }}</a>
+              <small>{{ row.product.sale_price|rub }} / шт.</small>
+              <form action="/cart/{{ row.product.id }}" method="post" class="inline-form">
+                <input type="hidden" name="csrf" value="{{ csrf }}">
+                <input class="form-control quantity"
+                       type="number"
+                       min="0"
+                       max="99"
+                       name="quantity"
+                       value="{{ row.quantity }}"
+                       aria-label="Количество {{ row.product.name }}"
+                       required>
+                <button class="btn btn-sm btn-outline-dark">Обновить</button>
+                <button class="link-button red" name="quantity" value="0" data-remove>Удалить</button>
+              </form>
+              {% if row.quantity>row.product.stock %}
+                <small class="red">На складе осталось {{ row.product.stock }} шт.</small>
+              {% endif %}
+            </div>
+            <strong>{{ row.total|rub }}</strong>
+          </article>
+        {% endfor %}
+      </section>
+      <aside class="panel checkout-panel">
+        <h2>Ваш заказ</h2>
+        <div class="summary-total">
+          <span>Итого</span>
+          <strong>{{ total|rub }}</strong>
+        </div>
+        <p class="muted">Доставка в учебном магазине бесплатная.</p>
+        {% if user %}
+          <form action="/checkout" method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <div class="field">
+              <label for="address">Адрес доставки / пункт самовывоза</label>
+              <input class="form-control"
+                     name="address"
+                     id="address"
+                     value="{{ user.address }}"
+                     maxlength="300"
+                     required>
+            </div>
+            <div class="field">
+              <label for="delivery_method">Получение</label>
+              <select class="form-select" name="delivery_method" id="delivery_method">
+                <option>Курьер</option>
+                <option>Самовывоз</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="payment_method">Оплата</label>
+              <select class="form-select" name="payment_method" id="payment_method">
+                <option>При получении</option>
+                <option>Учебная карта</option>
+              </select>
+            </div>
+            <button class="btn btn-primary w-100">Оформить заказ</button>
+            <small>Учебный заказ. Реальные деньги не списываются.</small>
+          </form>
+        {% else %}
+          <p>Для оформления войдите или зарегистрируйтесь. Корзина сохранится.</p>
+          <a class="btn btn-primary w-100" href="/login">Войти и оформить</a>
+        {% endif %}
+      </aside>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>В корзине пока пусто</h2>
+      <p>Самое время выбрать что-нибудь полезное.</p>
+      <a href="/products" class="btn btn-primary">Перейти в каталог</a>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <span class="eyebrow">УПРАВЛЕНИЕ МАГАЗИНОМ</span>
+  <h1>Административная панель</h1>
+  <p class="muted">Каталог, покупатели и все этапы заказа — в одном месте.</p>
+  <div class="admin-grid">
+    {% for key,info in sections.items() %}
+      <a class="panel admin-tile" href="/admin/{{ key }}">
+        <span>{{ info[0] }}</span>
+        <strong>{{ counts[key] }}</strong>
+        <small>Открыть раздел →</small>
+      </a>
+    {% endfor %}
+  </div>
+  <div class="panel mt-4">
+    <h3>Как выдать права администратора</h3>
+    <p>Откройте «Покупатели», найдите пользователя, нажмите «Изменить» и включите «Администратор». При регистрации эта роль всегда выключена. Свои права и собственный аккаунт удалить через сайт нельзя.</p>
+  </div>
+{% endblock %}

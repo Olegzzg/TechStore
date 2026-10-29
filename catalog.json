@@ -1,0 +1,212 @@
+[
+  {
+    "category": "Ноутбуки",
+    "name": "Ноутбук Apple MacBook Pro 14″ Space Grey",
+    "brand": "Apple",
+    "price": 189990,
+    "description": "Профессиональный ноутбук в алюминиевом корпусе. Яркий дисплей 14 дюймов, удобная клавиатура и мощная платформа для программирования, обработки фото и работы с документами.",
+    "image": "/static/images/product-78.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/1.webp",
+    "source_url": "https://dummyjson.com/products/78"
+  },
+  {
+    "category": "Мониторы",
+    "name": "Монитор Samsung Odyssey G5 27″",
+    "brand": "Samsung",
+    "price": 29990,
+    "description": "Изогнутый игровой монитор 27 дюймов с разрешением QHD 2560 × 1440. Частота обновления 165 Гц, AMD FreeSync и изгиб 1000R для погружения в игры.",
+    "image": "/static/images/samsung-g5.png",
+    "image_source": "https://images.samsung.com/is/image/samsung/p6pim/us/ls27cg552enxza/gallery/us-gaming-ls27cg552enxza-odyssey-g--g--c-qhd----hz-curved-gaming-monitor-black-552003942?wid=900&hei=700&fmt=png-alpha",
+    "source_url": "https://www.samsung.com/us/monitors/gaming/odyssey-g5-g55c-27-inch-165hz-curved-qhd-ls27cg552enxza/"
+  },
+  {
+    "category": "Смартфоны",
+    "name": "Смартфон Apple iPhone 13 Pro",
+    "brand": "Apple",
+    "price": 79990,
+    "description": "Смартфон с OLED-дисплеем, системой трёх камер и корпусом с металлической рамкой. Для фото, видеосвязи, приложений и повседневных задач.",
+    "image": "/static/images/product-123.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/1.webp",
+    "source_url": "https://dummyjson.com/products/123"
+  },
+  {
+    "category": "Периферия",
+    "name": "Игровая мышь Logitech G502 HERO",
+    "brand": "Logitech",
+    "price": 6990,
+    "description": "Проводная игровая мышь с датчиком HERO 25K, программируемыми кнопками и RGB-подсветкой. Настройка чувствительности, профилей и веса под любимые игры.",
+    "image": "/static/images/logitech-g502.png",
+    "image_source": "https://resource.logitechg.com/content/dam/gaming/en/non-braid/hyjal-g502-hero/2025/g502-hero-mouse-top-angle-gallery-1.png",
+    "source_url": "https://www.logitechg.com/en-us/shop/p/g502-hero-gaming-mouse"
+  },
+  {
+    "category": "Ноутбуки",
+    "name": "Ноутбук ASUS Zenbook Pro Duo",
+    "brand": "ASUS",
+    "price": 169990,
+    "description": "Ноутбук с дополнительным экраном для многозадачности. Размещайте инструменты, заметки и чаты на втором дисплее. Подходит для творчества и учебных проектов.",
+    "image": "/static/images/product-79.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/1.webp",
+    "source_url": "https://dummyjson.com/products/79"
+  },
+  {
+    "category": "Планшеты",
+    "name": "Планшет Apple iPad mini 2021 Starlight",
+    "brand": "Apple",
+    "price": 54990,
+    "description": "Компактный iPad для чтения, заметок и приложений. Небольшой корпус удобно брать с собой, а качественный экран подходит для работы с фото и видео.",
+    "image": "/static/images/product-159.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/tablets/ipad-mini-2021-starlight/1.webp",
+    "source_url": "https://dummyjson.com/products/159"
+  },
+  {
+    "category": "Аудио",
+    "name": "Наушники Apple AirPods Max Silver",
+    "brand": "Apple",
+    "price": 54990,
+    "description": "Полноразмерные наушники в серебристом цвете. Шумоподавление, мягкие амбушюры и объёмное звучание для музыки, кино и работы.",
+    "image": "/static/images/product-101.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/1.webp",
+    "source_url": "https://dummyjson.com/products/101"
+  },
+  {
+    "category": "Ноутбуки",
+    "name": "Ноутбук HUAWEI MateBook X Pro",
+    "brand": "HUAWEI",
+    "price": 119990,
+    "description": "Тонкий ноутбук с металлическим корпусом и качественным экраном. Удобный выбор для лекций, удалённой работы и повседневных задач.",
+    "image": "/static/images/product-80.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/1.webp",
+    "source_url": "https://dummyjson.com/products/80"
+  },
+  {
+    "category": "Смартфоны",
+    "name": "Смартфон Samsung Galaxy S10",
+    "brand": "Samsung",
+    "price": 29990,
+    "description": "Смартфон с AMOLED-экраном и несколькими камерами. Поддерживает беспроводную зарядку и подходит для связи, фото и мультимедиа.",
+    "image": "/static/images/product-133.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s10/1.webp",
+    "source_url": "https://dummyjson.com/products/133"
+  },
+  {
+    "category": "Планшеты",
+    "name": "Планшет Samsung Galaxy Tab S8+",
+    "brand": "Samsung",
+    "price": 74990,
+    "description": "Планшет с большим дисплеем для работы и развлечений. Удобен для рисунков, конспектов, видеозвонков и просмотра фильмов.",
+    "image": "/static/images/product-160.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/tablets/samsung-galaxy-tab-s8-plus-grey/1.webp",
+    "source_url": "https://dummyjson.com/products/160"
+  },
+  {
+    "category": "Аудио",
+    "name": "Наушники Apple AirPods",
+    "brand": "Apple",
+    "price": 16990,
+    "description": "Беспроводные наушники с зарядным футляром. Удобны для звонков и музыки, легко подключаются к устройствам Apple.",
+    "image": "/static/images/product-100.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/1.webp",
+    "source_url": "https://dummyjson.com/products/100"
+  },
+  {
+    "category": "Ноутбуки",
+    "name": "Ноутбук Lenovo Yoga 920",
+    "brand": "Lenovo",
+    "price": 89990,
+    "description": "Компактный ноутбук-трансформер с сенсорным дисплеем. Шарнир позволяет выбрать удобное положение для презентаций, просмотра фильмов и работы.",
+    "image": "/static/images/product-81.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/1.webp",
+    "source_url": "https://dummyjson.com/products/81"
+  },
+  {
+    "category": "Смартфоны",
+    "name": "Смартфон OPPO F19 Pro+",
+    "brand": "OPPO",
+    "price": 24990,
+    "description": "Смартфон с AMOLED-экраном и быстрой зарядкой. Удобен для общения, мобильных приложений, фотографий и просмотра видео.",
+    "image": "/static/images/product-126.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/smartphones/oppo-f19-pro-plus/1.webp",
+    "source_url": "https://dummyjson.com/products/126"
+  },
+  {
+    "category": "Аудио",
+    "name": "Наушники Beats Flex",
+    "brand": "Beats",
+    "price": 7990,
+    "description": "Лёгкие беспроводные наушники с шейным проводом. Магнитные вкладыши и удобное управление для музыки и разговоров.",
+    "image": "/static/images/product-107.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/mobile-accessories/beats-flex-wireless-earphones/1.webp",
+    "source_url": "https://dummyjson.com/products/107"
+  },
+  {
+    "category": "Ноутбуки",
+    "name": "Ноутбук Dell XPS 13 9300",
+    "brand": "Dell",
+    "price": 109990,
+    "description": "Лёгкий ноутбук с узкими рамками экрана. Сочетание компактного корпуса и удобной рабочей области для поездок, учёбы и офиса.",
+    "image": "/static/images/product-82.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/1.webp",
+    "source_url": "https://dummyjson.com/products/82"
+  },
+  {
+    "category": "Планшеты",
+    "name": "Планшет Samsung Galaxy Tab White",
+    "brand": "Samsung",
+    "price": 19990,
+    "description": "Лёгкий планшет для чтения, браузера и обучающих приложений. Белый корпус и удобный экран для повседневного использования.",
+    "image": "/static/images/product-161.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/tablets/samsung-galaxy-tab-white/1.webp",
+    "source_url": "https://dummyjson.com/products/161"
+  },
+  {
+    "category": "Смартфоны",
+    "name": "Смартфон realme C35",
+    "brand": "realme",
+    "price": 14990,
+    "description": "Практичный смартфон с большим экраном и ёмким аккумулятором. Базовые приложения, мессенджеры, фотографии и связь каждый день.",
+    "image": "/static/images/product-128.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/smartphones/realme-c35/1.webp",
+    "source_url": "https://dummyjson.com/products/128"
+  },
+  {
+    "category": "Аудио",
+    "name": "Умная колонка Apple HomePod mini",
+    "brand": "Apple",
+    "price": 12990,
+    "description": "Компактная колонка в тёмно-сером корпусе. Музыка и управление совместимой системой умного дома через экосистему Apple.",
+    "image": "/static/images/product-103.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-homepod-mini-cosmic-grey/1.webp",
+    "source_url": "https://dummyjson.com/products/103"
+  },
+  {
+    "category": "Смартфоны",
+    "name": "Смартфон vivo X21",
+    "brand": "vivo",
+    "price": 22990,
+    "description": "Смартфон с ярким экраном и аккуратным дизайном. Подходит для мобильной фотографии, общения и просмотра любимого контента.",
+    "image": "/static/images/product-136.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/smartphones/vivo-x21/1.webp",
+    "source_url": "https://dummyjson.com/products/136"
+  },
+  {
+    "category": "Периферия",
+    "name": "Зарядное устройство Apple USB",
+    "brand": "Apple",
+    "price": 2490,
+    "description": "Компактное сетевое зарядное устройство Apple. Подключение совместимого кабеля для зарядки мобильной техники дома и в поездке.",
+    "image": "/static/images/product-104.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-iphone-charger/1.webp",
+    "source_url": "https://dummyjson.com/products/104"
+  },
+  {
+    "category": "Периферия",
+    "name": "Внешний аккумулятор Apple MagSafe",
+    "brand": "Apple",
+    "price": 11990,
+    "description": "Магнитный аккумулятор для совместимых iPhone. Крепится к задней панели смартфона и позволяет подзарядить устройство в дороге.",
+    "image": "/static/images/product-105.webp",
+    "image_source": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/1.webp",
+    "source_url": "https://dummyjson.com/products/105"
+  }
+]

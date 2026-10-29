@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</span>
+      <h1>Мои заказы</h1>
+    </div>
+  </div>
+  {% for order in orders %}
+    <article class="panel order-panel">
+      <div class="section-heading">
+        <div>
+          <h3>Заказ №{{ order.id }}</h3>
+          <small>{{ order.created_at.strftime("%d.%m.%Y %H:%M") }}</small>
+        </div>
+        <span class="status">{{ order.status }}</span>
+      </div>
+      {% for item in order.items %}
+        <div class="order-item">
+          <a href="/products/{{ item.product_id }}">{{ item.product.name }}</a>
+          <span>{{ item.quantity }} × {{ item.price|rub }}</span>
+        </div>
+      {% endfor %}
+      <div class="order-meta">
+        <div>
+          <b>Доставка</b>
+          <p>{{ order.delivery.method if order.delivery else 'Данные уточняются' }} · {{ order.delivery.status if order.delivery else '' }}<br>{{ order.address }}{% if order.delivery and order.delivery.tracking_number %}
+            <br>Трек: {{ order.delivery.tracking_number }}{% endif %}
+        </p>
+      </div>
+      <div>
+        <b>Оплата</b>
+        <p>{{ order.payment.method if order.payment else 'Данные уточняются' }} · {{ order.payment.status if order.payment else '' }}</p>
+      </div>
+      <strong class="order-total">{{ order.total|rub }}</strong>
+    </div>
+    <div class="inline-form">
+      {% if order.status in ["Новый","В обработке"] %}
+        <form method="post"
+              action="/orders/{{ order.id }}/cancel"
+              data-confirm="Отменить заказ?">
+          <input type="hidden" name="csrf" value="{{ csrf }}">
+          <button class="btn btn-outline-dark btn-sm">Отменить заказ</button>
+        </form>
+      {% endif %}
+      {% if order.status!="Отменён" and order.payment and order.payment.method=="Учебная карта" and order.payment.status=="Ожидает оплаты" %}
+        <form method="post" action="/orders/{{ order.id }}/pay">
+          <input type="hidden" name="csrf" value="{{ csrf }}">
+          <button class="btn btn-primary btn-sm">Выполнить учебную оплату</button>
+        </form>
+      {% endif %}
+    </div>
+  </article>
+{% else %}
+  <div class="empty-state">
+    <h2>Пока нет заказов</h2>
+    <a href="/products" class="btn btn-primary mt-3">Выбрать технику</a>
+  </div>
+{% endfor %}
+{% endblock %}

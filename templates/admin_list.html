@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="breadcrumbs">
+    <a href="/admin">Администрирование</a> / {{ sections[section][0] }}
+  </div>
+  <div class="section-heading">
+    <h1>{{ sections[section][0] }}</h1>
+    <a class="btn btn-primary" href="/admin/{{ section }}/new">＋ Добавить запись</a>
+  </div>
+  <nav class="category-chips">
+    {% for key,info in sections.items() %}
+      <a class="{{ 'selected' if section==key else '' }}"
+         href="/admin/{{ key }}">{{ info[0] }}</a>
+    {% endfor %}
+  </nav>
+  <div class="panel table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>{{ 'Покупатель' if section=='users' else 'Запись' }}</th>
+          <th>Данные и связи</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+          <tr>
+            <td>{{ r.id }}</td>
+            <td>
+              {% if section=="products" %}
+                <div class="table-product">
+                  <img src="{{ r.image }}" alt="{{ r.name }}">
+                  <span>{{ r.name }}<small>{{ r.brand }}</small>
+                  </span>
+                </div>
+              {% elif section=="users" %}{{ r.full_name }}<small>{{ r.email }}</small>
+              {% elif section in ["categories","promotions"] %}{{ r.name }}{% else %}Заказ №{{ r.order_id if section!='orders' else r.id }}<small>{{ r.order.user.full_name if section!='orders' else r.user.full_name }}</small>
+              {% endif %}
+            </td>
+            <td>
+              {% if section=="products" %}{{ r.sale_price|rub }} · {{ r.stock }} шт.<small>{{ r.category.name }} · Акция ID: {{ r.promotion_id or 'нет' }}</small>
+              {% elif section=="promotions" %}−{{ r.discount_percent }}%<small>{{ r.starts_on }} — {{ r.ends_on }}</small>
+              {% elif section=="users" %}{{ 'Администратор' if r.is_admin else 'Покупатель' }}<small>{{ r.address }}</small>
+              {% elif section=="categories" %}Товаров: {{ r.products|length }}{% elif section=="orders" %}{{ r.status }} · {{ r.total|rub }}<small>{{ r.address }} · {{ r.items|length }} поз.</small>
+              {% elif section=="payments" %}{{ r.status }} · {{ r.amount|rub }}<small>{{ r.method }}</small>
+              {% else %}{{ r.status }} · {{ r.method }}<small>{{ r.address }} · {{ r.tracking_number }}</small>
+              {% endif %}
+            </td>
+            <td>
+              <div class="table-actions">
+                <a class="btn btn-sm btn-outline-dark"
+                   href="/admin/{{ section }}/{{ r.id }}/edit">Изменить</a>
+                <form action="/admin/{{ section }}/{{ r.id }}/delete"
+                      method="post"
+                      data-confirm="Удалить запись №{{ r.id }}? Связанные данные заказа также будут удалены.">
+                  <input type="hidden" name="csrf" value="{{ csrf }}">
+                  <button class="btn btn-sm btn-outline-danger">Удалить</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center py-5">Записей пока нет. Добавьте первую.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

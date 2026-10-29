@@ -1,0 +1,53 @@
+{# Повторяемые поля ЛР4 для регистрации, личного кабинета и административной формы пользователя.
+Читает form — словарь/FormData либо ORM-объект; окончательная проверка выполняется security.profile_fields(). #}{# input_field: key/label — имя и подпись; type/placeholder/required/maxlength — атрибуты. Возвращает HTML label+input; вызывается ниже для общих полей профиля. #}{% macro input_field(key,label,type='text',placeholder='',required=true,maxlength=300) %}
+<div class="field">
+<label for="{{ key }}">
+{{ label }}
+{% if required %}
+<span class="required">*</span>
+{% endif %}
+</label>
+<input class="form-control" id="{{ key }}" name="{{ key }}" type="{{ type }}" value="{{ form[key] if form[key] is defined else '' }}" placeholder="{{ placeholder }}" maxlength="{{ maxlength }}" {% if type=='date' %} min="1900-01-01" {% endif %} {% if required %} required {% endif %}>
+</div>
+{% endmacro %}
+{{ input_field('full_name','ФИО',placeholder='Иванов Иван Иванович',maxlength=160) }}
+{{ input_field('birth_date', 'Дата рождения', 'date') }}
+{{ input_field('address','Адрес',placeholder='г. Москва, ул. Примерная, д. 1') }}
+<fieldset class="field">
+<legend>
+Пол <span class="required">*</span>
+</legend>
+<div class="radio-row">
+{% for gender in ['Мужской','Женский'] %}
+<label>
+<input class="form-check-input" type="radio" name="gender" value="{{ gender }}" {% if form.gender==gender %} checked {% endif %} required> {{ gender }}</label>
+{% endfor %}
+</div>
+</fieldset>
+{{ input_field('interests','Интересы',placeholder='Программирование, игры, фотография…',maxlength=2000) }}
+{{ input_field('vk_url','Ссылка на профиль VK','url','https://vk.ru/username',maxlength=250) }}
+<div class="field-row">
+<div class="field">
+<label for="blood_group">
+Группа крови <span class="required">*</span>
+</label>
+<select class="form-select" id="blood_group" name="blood_group" required>
+<option value="">Не выбрано</option>
+{% for group in ['I','II','III','IV'] %}
+<option {% if form.blood_group==group %} selected {% endif %}>{{ group }}</option>
+{% endfor %}
+</select>
+</div>
+<div class="field">
+<label for="rhesus">
+Резус-фактор <span class="required">*</span>
+</label>
+<select class="form-select" id="rhesus" name="rhesus" required>
+<option value="">Не выбрано</option>
+{% for value in ['+','-'] %}
+<option {% if form.rhesus==value %} selected {% endif %}>{{ value }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+{{ input_field('email','Email','email','you@example.ru',maxlength=254) }}
